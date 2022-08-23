@@ -52,7 +52,7 @@ def _post_process(
     _, cls_topk_indices_all = torch.topk(cls_outputs_all.reshape(batch_size, -1), dim=1, k=max_detection_points)
     # FIXME change someday, will have to live with annoying warnings for a while as testing impl breaks torchscript
     # indices_all = torch.div(cls_topk_indices_all, num_classes, rounding_mode='trunc')
-    indices_all = cls_topk_indices_all // num_classes
+    indices_all = torch.div(cls_topk_indices_all, num_classes, rounding_mode='floor')
     classes_all = cls_topk_indices_all % num_classes
 
     box_outputs_all_after_topk = torch.gather(
